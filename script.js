@@ -15,6 +15,7 @@ function initSecretForm() {
 
 function initLovePage() {
   const loveCard = document.querySelector(".card--love");
+  const songsSection = document.querySelector(".section--songs");
   const playerWrapper = document.getElementById("audio-player-ui");
   const audioElement = document.getElementById("audio-player");
   const playerTitle = document.getElementById("player-track-title");
@@ -38,6 +39,13 @@ function initLovePage() {
   const photoModalBackdrop = document.getElementById("photo-modal-backdrop");
 
   if (!loveCard) return;
+  // Crear ancla para poder mover el reproductor entre la tarjeta y el body
+  let playerAnchor = null;
+  if (playerWrapper && songsSection) {
+    playerAnchor = document.createElement("div");
+    playerAnchor.style.display = "none";
+    songsSection.insertAdjacentElement("afterend", playerAnchor);
+  }
 
   // Playlist configuration
   const tracks = [
@@ -80,7 +88,6 @@ function initLovePage() {
   let isPlaying = false;
   let songCards = [];
   const DEFAULT_VOLUME = 0.8;
-  let fixedPlayerTop = null;
 
   function updateVolumeIcon() {
     if (!btnVolume) return;
@@ -236,6 +243,21 @@ function initLovePage() {
   // Intentar reproducir al entrar en la página
   play();
 
+  // Reubicar el reproductor según el ancho (desktop dentro de la tarjeta, móvil flotando)
+  function placePlayer() {
+    if (!playerWrapper || !playerAnchor) return;
+    if (window.innerWidth >= 900) {
+      if (playerWrapper.previousElementSibling === playerAnchor) return;
+      playerAnchor.insertAdjacentElement("afterend", playerWrapper);
+    } else {
+      if (playerWrapper.parentElement === document.body) return;
+      document.body.appendChild(playerWrapper);
+    }
+  }
+
+  placePlayer();
+  window.addEventListener("resize", placePlayer);
+
   // Galería de fotos
   const photoPaths = [
     "assets/images/us/uno.jpeg",
@@ -274,60 +296,6 @@ function initLovePage() {
     updateCoverImage();
     setInterval(updateCoverImage, 60000);
   }
-
-  // Posicionar el reproductor para que se vea bonito
-  function repositionPlayer() {
-    if (!playerWrapper || !loveCard) return;
-
-    const viewportHeight = window.innerHeight;
-    const isWide = window.innerWidth >= 900;
-
-    const cardRect = loveCard.getBoundingClientRect();
-    const playerRect = playerWrapper.getBoundingClientRect();
-
-    if (isWide) {
-      // Versión grande: mantener una posición estable, calculada solo la primera vez
-      playerWrapper.style.bottom = "";
-
-      // Horizontal: un poco más hacia la derecha
-      const freeSpace = window.innerWidth - cardRect.right;
-      const sideGap = Math.max(24, freeSpace / 3);
-      playerWrapper.style.right = `${sideGap}px`;
-
-      // Vertical: calculada una sola vez para que no cambie con el resize
-      if (fixedPlayerTop == null) {
-        let targetCenter = (cardRect.top + cardRect.bottom) / 2 - 30;
-        let top = targetCenter - playerRect.height / 2;
-        const minTop = 32;
-        const maxTop = viewportHeight - playerRect.height - 32;
-        if (top < minTop) top = minTop;
-        if (top > maxTop) top = maxTop;
-        fixedPlayerTop = top;
-      }
-      playerWrapper.style.top = `${fixedPlayerTop}px`;
-    } else {
-      // Al pasar a vista compacta, se permite recalcular de nuevo cuando vuelva a ser grande
-      fixedPlayerTop = null;
-      // Versión compacta: flotante abajo a la derecha, evitando solapar la tarjeta
-      playerWrapper.style.top = "";
-      playerWrapper.style.right = "16px";
-
-      let bottom = 16;
-      const gap = 10;
-
-      const defaultTop = viewportHeight - bottom - playerRect.height;
-      const minTop = cardRect.bottom + gap;
-
-      if (defaultTop <= minTop) {
-        bottom = Math.max(4, viewportHeight - minTop - playerRect.height);
-      }
-
-      playerWrapper.style.bottom = `${bottom}px`;
-    }
-  }
-
-  repositionPlayer();
-  window.addEventListener("resize", repositionPlayer);
 
   // Cerrar control de volumen al hacer clic fuera
   document.addEventListener("click", (event) => {
