@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Feliz cumpleaños, papá</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="page page--love">
+    <video
+      class="page-video"
+      autoplay
+      muted
+      loop
+      playsinline
+      aria-hidden="true"
+    >
+      <source src="assets/images/sunset.mp4" type="video/mp4" />
+    </video>
+    <div class="hearts" aria-hidden="true">
+      <span>🎈</span>
+      <span>🎉</span>
+      <span>🎈</span>
+    </div>
+    <main class="card card--love">
+      <header class="love-header">
+        <h1 class="card__title card__title--love">Feliz cumpleaños, papá 🎂</h1>
+        <p class="card__text">
+          Gracias por ser el mejor papá del mundo. Esta página es un pequeño
+          detalle para recordarte cuánto te quiero y admiro.
+        </p>
+        <p class="card__text">
+          Hoy celebramos tu vida, tus abrazos y todas las risas que compartimos. 🎉
+        </p>
+      </header>
+
+      <section class="section section--intro">
+        <h2 class="section__title">Tus canciones y momentos</h2>
+        <p class="section__text">
+          Cada momento contigo es un regalo. Gracias por tus consejos, tus historias
+          y por enseñarme tanto. Ojalá podamos seguir sumando recuerdos por muchos
+          años más. ❤️
+        </p>
+      </section>
+
+      <section class="section section--songs">
+        <button class="gallery-button" id="open-gallery" type="button">
+          <span class="gallery-button__icon">📸</span>
+          <span class="gallery-button__text">Galería de recuerdos</span>
+        </button>
+        <h2 class="section__title">Playlist para papá</h2>
+        <p class="section__text">
+          Estas son algunas canciones que me recuerdan a ti. Toca una tarjeta para
+          reproducirla.
+        </p>
+        <div class="song-list" id="song-list"></div>
+      </section>
+
+      <div class="audio-player" id="audio-player-ui">
+        <div class="audio-player__header">
+          <span class="audio-player__label">Sonando ahora</span>
+        </div>
+        <div class="audio-player__cover">
+          <img
+            src=""
+            alt="Foto con papá"
+            class="audio-player__cover-image"
+            id="player-cover"
+          />
+        </div>
+        <div class="audio-player__info">
+          <div class="audio-player__track">
+            <div class="audio-player__title" id="player-track-title">Por Ti</div>
+            <div class="audio-player__artist" id="player-track-artist">3AM</div>
+          </div>
+          <div class="audio-player__controls">
+            <button
+              class="audio-player__button"
+              id="btn-prev"
+              type="button"
+              aria-label="Canción anterior"
+            >
+              ⏮
+            </button>
+            <button
+              class="audio-player__button audio-player__button--primary"
+              id="btn-play"
+              type="button"
+              aria-label="Reproducir o pausar"
+            >
+              ▶
+            </button>
+            <button
+              class="audio-player__button"
+              id="btn-next"
+              type="button"
+              aria-label="Siguiente canción"
+            >
+              ⏭
+            </button>
+            <button
+              class="audio-player__button audio-player__button--volume"
+              id="btn-volume"
+              type="button"
+              aria-label="Ajustar volumen"
+            >
+              🔊
+            </button>
+          </div>
+          <div class="audio-player__volume" id="volume-container">
+            <input
+              type="range"
+              min="0"
+              max="100"
+              value="80"
+              class="audio-player__volume-slider"
+              id="volume-slider"
+              aria-label="Volumen"
+            />
+          </div>
+        </div>
+        <audio id="audio-player" preload="metadata"></audio>
+      </div>
+    </main>
+
+    <div class="gallery-modal" id="gallery-modal" aria-hidden="true">
+      <div class="gallery-modal__backdrop" id="gallery-modal-backdrop"></div>
+      <div class="gallery-modal__content">
+        <div class="gallery-modal__header">
+          <h2 class="gallery-modal__title">Nuestros momentos contigo</h2>
+          <button
+            class="gallery-modal__close"
+            id="gallery-modal-close"
+            type="button"
+            aria-label="Cerrar galería"
+          >
+            ✕
+          </button>
+        </div>
+        <p class="gallery-modal__subtitle">
+          Una pequeña recopilación de recuerdos que amo a tu lado.
+        </p>
+        <div class="gallery-modal__body">
+          <div class="gallery-grid" id="gallery-grid"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="photo-modal" id="photo-modal" aria-hidden="true">
+      <div class="photo-modal__backdrop" id="photo-modal-backdrop"></div>
+      <div class="photo-modal__content">
+        <button
+          class="photo-modal__close"
+          id="photo-modal-close"
+          type="button"
+          aria-label="Cerrar imagen"
+        >
+          ✕
+        </button>
+        <img
+          src=""
+          alt="Foto con papá"
+          class="photo-modal__image"
+          id="photo-modal-image"
+        />
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
